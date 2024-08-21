@@ -1,0 +1,157 @@
+package handlers
+
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+	"taskmanager/internal/database"
+	"taskmanager/internal/models"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/mux"
+)
+
+// Función que obtiene todos los tasks de la base de datos y los devuelve en formato JSON.
+func GetTasks(w http.ResponseWriter, r *http.Request) {
+	var tasks []models.Task
+	database.DB.Find(&tasks)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(&tasks)
+}
+
+// Función que obtiene un task de la base de datos y lo devuelve en formato JSON.
+func GetTaskByID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var task models.Task
+	result := database.DB.First(&task, id)
+
+	if result.Error != nil {
+		http.Error(w, "Task not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(task)
+}
+
+// Función que inserta un task en la base de datos.
+func CreateTask(w http.ResponseWriter, r *http.Request) {
+	var task models.Task
+	err := json.NewDecoder(r.Body).Decode(&task)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Extraer el ID del usuario desde el contexto que se estableció en el middleware
+	userID, ok := r.Context().Value("userID").(uuid.UUID)
+	log.Println("User ID:", userID)
+	if ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	// Asignar el ID del usuario a la tarea
+	task.UserID = userID
+
+	// Guardar la tarea en la base de datos
+	result := database.DB.Create(&task)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated) // Código 201 para indicar que se ha creado exitosamente.
+	json.NewEncoder(w).Encode(task)
+}
+
+
+// Función que actualiza un task.
+func UpdateTask(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var task models.Task
+	result := database.DB.First(&task, id)
+	if result.Error != nil {
+		http.Error(w, "Task not found", http.StatusNotFound)
+		return
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&task)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	database.DB.Save(&task)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(task)
+}
+
+// Función que elimina un task de la base de datos.
+func DeleteTask(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var task models.Task
+	result := database.DB.Delete(&task, id)
+	if result.Error != nil {
+		http.Error(w, "Task not found", http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// funcion quie cambia de false a true el completed
+
+func CompleteTask(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	taskID := vars["id"]
+
+	var task models.Task
+	result := database.DB.First(&task, "id = ?", taskID)
+
+	if result.Error != nil {
+		http.Error(w, "Task not found", http.StatusNotFound)
+		return
+	}
+
+	task.Completed = true
+
+	database.DB.Save(&task)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(task)
+}
+
+// funcion que cambia de true a false el completed
+func UncompleteTask(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	taskID := vars["id"]
+
+	var task models.Task
+	result := database.DB.First(&task, "id = ?", taskID)
+
+	if result.Error != nil {
+		http.Error(w, "Task not found", http.StatusNotFound)
+		return
+	}
+
+	task.Completed = false
+
+	database.DB.Save(&task)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(task)
+}
