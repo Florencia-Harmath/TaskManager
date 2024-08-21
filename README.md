@@ -118,6 +118,3 @@ Para proteger las rutas, se utiliza un middleware que verifica la presencia y va
 
 ¡Las contribuciones son bienvenidas! Por favor, abre un issue o un pull request para discutir cualquier cambio.
 
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
