@@ -26,3 +26,4 @@ func main() {
 	r := router.InitializeRouter()
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
+

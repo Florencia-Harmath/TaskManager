@@ -8,7 +8,6 @@ import (
 	"taskmanager/internal/models"
 
 	"github.com/google/uuid"
-	"github.com/gorilla/mux"
 )
 
 // Función que obtiene todos los tasks de la base de datos y los devuelve en formato JSON.
@@ -23,9 +22,7 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 
 // Función que obtiene un task de la base de datos y lo devuelve en formato JSON.
 func GetTaskByID(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
+	id := r.URL.Query().Get("id")
 	var task models.Task
 	result := database.DB.First(&task, id)
 
@@ -73,8 +70,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 
 // Función que actualiza un task.
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := r.URL.Query().Get("id")
 
 	var task models.Task
 	result := database.DB.First(&task, id)
@@ -98,8 +94,7 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 // Función que elimina un task de la base de datos.
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := r.URL.Query().Get("id")
 
 	var task models.Task
 	result := database.DB.Delete(&task, id)
@@ -114,11 +109,10 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 // funcion quie cambia de false a true el completed
 
 func CompleteTask(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	taskID := vars["id"]
+	id := r.URL.Query().Get("id")
 
 	var task models.Task
-	result := database.DB.First(&task, "id = ?", taskID)
+	result := database.DB.First(&task, "id = ?", id)
 
 	if result.Error != nil {
 		http.Error(w, "Task not found", http.StatusNotFound)
@@ -136,11 +130,10 @@ func CompleteTask(w http.ResponseWriter, r *http.Request) {
 
 // funcion que cambia de true a false el completed
 func UncompleteTask(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	taskID := vars["id"]
+	id := r.URL.Query().Get("id")
 
 	var task models.Task
-	result := database.DB.First(&task, "id = ?", taskID)
+	result := database.DB.First(&task, "id = ?", id)
 
 	if result.Error != nil {
 		http.Error(w, "Task not found", http.StatusNotFound)
