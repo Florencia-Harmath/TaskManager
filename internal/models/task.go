@@ -15,7 +15,7 @@ type Task struct {
 	Title     string
 	Description   string
 	Completed bool
-	UserID    uuid.UUID
+	UserID    uuid.UUID `gorm:"type:uuid"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

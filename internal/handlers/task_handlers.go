@@ -4,16 +4,24 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	
 	"taskmanager/internal/database"
 	"taskmanager/internal/models"
+	"taskmanager/pkg/middleware"
 
 	"github.com/google/uuid"
 )
 
 // Función que obtiene todos los tasks de la base de datos y los devuelve en formato JSON.
 func GetTasks(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	var tasks []models.Task
-	database.DB.Find(&tasks)
+	database.DB.Where("user_id = ?", userID).Find(&tasks)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -22,9 +30,15 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 
 // Función que obtiene un task de la base de datos y lo devuelve en formato JSON.
 func GetTaskByID(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	id := r.URL.Query().Get("id")
 	var task models.Task
-	result := database.DB.First(&task, id)
+	result := database.DB.Where("user_id = ? AND id = ?", userID, id).First(&task)
 
 	if result.Error != nil {
 		http.Error(w, "Task not found", http.StatusNotFound)
@@ -45,17 +59,16 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Extraer el ID del usuario desde el contexto que se estableció en el middleware
-	userID, ok := r.Context().Value("userID").(uuid.UUID)
-	log.Println("User ID:", userID)
-	if ok {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
+	if !ok {
 		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
 
-	// Asignar el ID del usuario a la tarea
+	log.Println("User ID:", userID)
+
 	task.UserID = userID
 
-	// Guardar la tarea en la base de datos
 	result := database.DB.Create(&task)
 	if result.Error != nil {
 		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
@@ -63,17 +76,24 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated) // Código 201 para indicar que se ha creado exitosamente.
+	w.WriteHeader(http.StatusCreated) 
 	json.NewEncoder(w).Encode(task)
 }
 
 
+
 // Función que actualiza un task.
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	id := r.URL.Query().Get("id")
 
 	var task models.Task
-	result := database.DB.First(&task, id)
+	result := database.DB.Where("user_id = ? AND id = ?", userID, id).First(&task)
 	if result.Error != nil {
 		http.Error(w, "Task not found", http.StatusNotFound)
 		return
@@ -94,10 +114,16 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 // Función que elimina un task de la base de datos.
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	id := r.URL.Query().Get("id")
 
 	var task models.Task
-	result := database.DB.Delete(&task, id)
+	result := database.DB.Where("user_id = ? AND id = ?", userID, id).Delete(&task)
 	if result.Error != nil {
 		http.Error(w, "Task not found", http.StatusNotFound)
 		return
