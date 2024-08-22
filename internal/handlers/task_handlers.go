@@ -2,14 +2,17 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
-	
+
 	"taskmanager/internal/database"
 	"taskmanager/internal/models"
 	"taskmanager/pkg/middleware"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
 // Función que obtiene todos los tasks de la base de datos y los devuelve en formato JSON.
@@ -30,24 +33,47 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 
 // Función que obtiene un task de la base de datos y lo devuelve en formato JSON.
 func GetTaskByID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	if id == "" {
+		http.Error(w, "Task ID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Obtener el UserID del contexto
 	userID, ok := r.Context().Value(middleware.UserIDKey).(uuid.UUID)
 	if !ok {
 		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
 
-	id := r.URL.Query().Get("id")
+	// Convertir el ID de la tarea al tipo adecuado si es necesario
+	taskID, err := uuid.Parse(id)
+	if err != nil {
+		http.Error(w, "Invalid Task ID format", http.StatusBadRequest)
+		return
+	}
+
 	var task models.Task
-	result := database.DB.Where("user_id = ? AND id = ?", userID, id).First(&task)
+	result := database.DB.Where("user_id = ? AND id = ?", userID, taskID).First(&task)
 
 	if result.Error != nil {
-		http.Error(w, "Task not found", http.StatusNotFound)
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			http.Error(w, "Task not found", http.StatusNotFound)
+		} else {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(task)
+	if err := json.NewEncoder(w).Encode(task); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+	}
 }
+
+
 
 // Función que inserta un task en la base de datos.
 func CreateTask(w http.ResponseWriter, r *http.Request) {
