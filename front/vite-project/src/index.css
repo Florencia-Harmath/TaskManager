@@ -1,0 +1,23 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --cielo-claro: #E3F2FD;
+  --coral-suave: #FF6F61;
+  --verde-menta: #A5D6A7;
+  --niebla-gris: #CFD8DC;
+  --azul-profundo: #1565C0;
+  --amarillo-pastel: #F9EB6C;
+  --gris-oscuro: #8f8787;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif; 
+  background-color: var(--niebla-gris);
+  color: var(--gris-oscuro);
+}
