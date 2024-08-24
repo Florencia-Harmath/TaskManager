@@ -20,6 +20,7 @@ const Home = () => {
           Registrarse
         </button>
       </div>
+      <img src="/src/assets/trabajando.jpeg" alt="" className={styles.homeImage} />
     </div>
   );
 };

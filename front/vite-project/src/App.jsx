@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import NavBar from "./components/navbar/NavBar";
-import Home from "./components/home/Home";
-import Login from "./components/login/Login";
-import Register from "./components/register/Register";
-// import Tasks from "./Tasks";
-// import Profile from "./Profile";
+// src/App.js
+import { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import NavBar from './components/navbar/NavBar';
+import Home from './components/home/Home';
+import Login from './components/login/Login';
+import Register from './components/register/Register';
+import ContainerTasks from './components/containerTasks/containerTasks';
+import CreateTask from './components/createTasks/CreateTasks';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -24,16 +25,10 @@ const App = () => {
       <NavBar isAuthenticated={isAuthenticated} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={ <Login />} />
         <Route path="/register" element={<Register />} />
-        {/* <Route
-          path="/tasks"
-          element={isAuthenticated ? <Tasks /> : <Login />}
-        />
-        <Route
-          path="/profile"
-          element={isAuthenticated ? <Profile /> : <Login />}
-        /> */}
+        <Route path="/tasks" element={isAuthenticated ? <ContainerTasks /> : <Login />} />
+        <Route path="/create-task" element={isAuthenticated ? <CreateTask /> : <Login />} />
       </Routes>
     </>
   );

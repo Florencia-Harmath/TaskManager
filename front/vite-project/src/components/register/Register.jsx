@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../redux/authSlice";
-import { Link, useNavigate } from "react-router-dom";
-import styles from "./Register.module.css";
+// src/components/register/Register.jsx
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../redux/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from './Register.module.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const dispatch = useDispatch();
@@ -35,10 +36,10 @@ const Register = () => {
     dispatch(registerUser({ name, email, password }))
       .unwrap()
       .then(() => {
-        navigate("/login");
+        navigate('/login');
       })
       .catch((err) => {
-        console.error("Failed to register:", err);
+        console.error('Failed to register:', err);
       });
   };
 
@@ -94,6 +95,7 @@ const Register = () => {
       <p className={styles.redirectText}>
         ¿Ya tienes cuenta? <Link to="/login" className={styles.redirectLink}>Inicia sesión</Link>
       </p>
+      <img src="/src/assets/inicioregistro.jpeg" alt="" className={styles.registerImage} />
     </div>
   );
 };

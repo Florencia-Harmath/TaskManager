@@ -1,3 +1,4 @@
+// src/components/login/Login.jsx
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/authSlice';
@@ -18,8 +19,10 @@ const Login = () => {
     e.preventDefault();
     dispatch(loginUser(formData))
       .unwrap()
-      .then(() => {
-        navigate('/tasks');
+      .then((result) => {
+        if (result.token) {
+          navigate('/tasks');
+        }
       })
       .catch((err) => {
         console.error('Failed to login:', err);
@@ -58,6 +61,7 @@ const Login = () => {
       <p className={styles.redirectText}>
         ¿No tienes cuenta? <Link to="/register" className={styles.redirectLink}>Regístrate</Link>
       </p>
+      <img src="/src/assets/inicioregistro.jpeg" alt="" className={styles.loginImage} />
     </div>
   );
 };

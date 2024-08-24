@@ -1,9 +1,8 @@
-// src/redux/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authReducer from './authSlice';
-import tasksReducer from './tasksSlice';
+import tasksReducer from './tasksSlice'; // Importa correctamente tasksReducer
 
 const persistConfig = {
   key: 'root',
@@ -11,12 +10,12 @@ const persistConfig = {
   whitelist: ['auth'], 
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 const store = configureStore({
   reducer: {
-    auth: persistedReducer,
-    tasks: tasksReducer,
+    auth: persistedAuthReducer,
+    tasks: tasksReducer, // Usa tasksReducer aquí
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

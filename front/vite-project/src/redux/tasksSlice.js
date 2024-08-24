@@ -2,109 +2,142 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// Crea una instancia de Axios con la configuración base
+const axiosInstance = axios.create({
+  baseURL: '/api', // Cambia a la baseURL adecuada si es diferente
+});
+
 // Obtener todas las tareas
 export const fetchTasks = createAsyncThunk(
   'tasks/fetchTasks',
-  async (_, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.get('/api/tasks', {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    });
-    return response.data; // Debe ser un objeto serializable
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.get('/tasks', {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Obtener tarea por ID
 export const fetchTaskById = createAsyncThunk(
   'tasks/fetchTaskById',
-  async (taskId, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.get(`/api/tasks/${taskId}`, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    });
-    return response.data; // Debe ser un objeto serializable
+  async (taskId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.get(`/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Crear una tarea
 export const addTask = createAsyncThunk(
   'tasks/addTask',
-  async (taskData, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.post('/api/createTasks', taskData, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    });
-    return response.data; // Debe ser un objeto serializable
+  async (taskData, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.post('/tasks', taskData, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Editar una tarea por ID
 export const editTask = createAsyncThunk(
   'tasks/editTask',
-  async ({ taskId, updatedTaskData }, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.put(`/api/tasks/${taskId}`, updatedTaskData, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    });
-    return response.data; // Debe ser un objeto serializable
+  async ({ taskId, updatedTaskData }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.put(`/tasks/${taskId}`, updatedTaskData, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Borrar una tarea por ID
 export const deleteTask = createAsyncThunk(
   'tasks/deleteTask',
-  async (taskId, { getState }) => {
-    const { auth } = getState();
-    await axios.delete(`/api/tasks/${taskId}`, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    });
-    return taskId; // Debe ser un valor serializable
+  async (taskId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      await axiosInstance.delete(`/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return taskId; // Debe ser un valor serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Cambiar estado de tarea a completo
 export const completeTask = createAsyncThunk(
   'tasks/completeTask',
-  async (taskId, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.put(
-      `/api/tasks/${taskId}/complete`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      }
-    );
-    return response.data; // Debe ser un objeto serializable
+  async (taskId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.put(
+        `/tasks/${taskId}/complete`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 
 // Cambiar estado de tarea a incompleto
 export const uncompleteTask = createAsyncThunk(
   'tasks/uncompleteTask',
-  async (taskId, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.put(
-      `/api/tasks/${taskId}/uncomplete`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      }
-    );
-    return response.data; // Debe ser un objeto serializable
+  async (taskId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axiosInstance.put(
+        `/tasks/${taskId}/uncomplete`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      return response.data; // Debe ser un objeto serializable
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
   }
 );
 

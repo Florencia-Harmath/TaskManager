@@ -1,0 +1,29 @@
+/* Contenedor principal de las tareas */
+.containerTasks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--niebla-gris);
+    min-height: 100vh;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .containerTasks {
+        padding: 10px;
+    }
+
+    .taskContainer {
+        padding: 15px;
+    }
+
+    .taskTitle {
+        font-size: 1.2rem;
+    }
+
+    .taskDescription {
+        font-size: 0.9rem;
+    }
+}

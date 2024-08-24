@@ -1,50 +1,52 @@
 /* Contenedor principal del formulario de login */
 .loginContainer {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: var(--niebla-gris);
-    padding: 20px;
-    box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 20px;
+  text-align: center;
+  margin: 100px auto; /* Centrado automático en el eje horizontal */
+  background-color: var(--fondo-seccion);
+  box-shadow: 0 10px 50px var(--fondo-seccion);
+  max-width: 90%;
 }
 
 /* Título del formulario */
 .loginTitle {
-    font-size: 2rem;
-    color: var(--azul-profundo);
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+  margin-bottom: 20px;
 }
 
 /* Estilo del formulario */
 .loginForm {
     width: 100%;
     max-width: 400px;
-    background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px;
     box-sizing: border-box;
 }
 
 /* Agrupación de los campos del formulario */
 .formGroup {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 /* Etiquetas de los campos */
 .formGroup label {
     display: block;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--gris-oscuro);
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
 /* Campos de entrada del formulario */
 .formGroup input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid var(--niebla-gris);
     border-radius: 4px;
     font-size: 1rem;
@@ -54,18 +56,19 @@
 /* Botón de envío del formulario */
 .loginButton {
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--coral-suave);
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--botones);
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
 }
 
 .loginButton:hover {
-    background-color: var(--verde-menta);
+    background-color: var(--fondo);
 }
 
 .loginButton:disabled {
@@ -76,14 +79,14 @@
 /* Mensaje de error */
 .errorMessage {
     color: red;
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-top: 10px;
 }
 
 /* Estilo para el texto de redirección en el formulario de inicio de sesión */
 .redirectText {
-    margin-top: 15px;
-    font-size: 0.9rem;
+    margin-top: 20px;
+    font-size: 1rem;
     color: var(--gris-oscuro);
 }
 
@@ -97,15 +100,25 @@
     text-decoration: underline;
 }
 
+/* Imagen */
+.loginImage {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .loginTitle {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
     .loginForm {
         width: 90%;
-        padding: 15px;
+        padding: 20px;
     }
 
     .formGroup input {
@@ -113,7 +126,12 @@
     }
 
     .loginButton {
-        font-size: 0.9rem;
-        padding: 8px;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .loginImage {
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 }
