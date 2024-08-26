@@ -5,7 +5,7 @@ import axios from 'axios';
 const initialState = {
   user: null,
   token: null,
-  status: 'idle', // 'idle', 'loading', 'succeeded', 'failed'
+  status: 'idle',
   error: null,
 };
 
@@ -14,10 +14,10 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, thunkAPI) => {
     try {
-      const response = await axios.post('/register', userData);
-      return response.data; // Debe ser un objeto serializable
+      const response = await axios.post('/api/register', userData);
+      return response.data;
     } catch (error) {
-      const message = error.response?.data?.message || "Failed to register";
+      const message = error.response?.data?.message || 'Failed to register';
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -28,8 +28,9 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (loginData, thunkAPI) => {
     try {
-      const response = await axios.post('/login', loginData);
-      return response.data; // Debe ser un objeto serializable
+      const response = await axios.post('/api/login', loginData);
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -69,7 +70,7 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         state.user = action.payload.user;
         state.token = action.payload.token;
-        localStorage.setItem('isAuthenticated', 'true'); // Aquí actualizamos el localStorage
+        localStorage.setItem('isAuthenticated', 'true');
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';

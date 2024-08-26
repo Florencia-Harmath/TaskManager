@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tasks" element={<ContainerTasks />} />
-        <Route path="/create-task" element={<CreateTask />} />
+        <Route path="/create-tasks" element={<CreateTask />} />
       </Routes>
     </>
   );

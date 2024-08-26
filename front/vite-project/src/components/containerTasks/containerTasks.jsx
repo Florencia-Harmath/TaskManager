@@ -19,7 +19,10 @@ const ContainerTasks = () => {
     return <p>Loading tasks...</p>;
   }
 
-  if (tasks.length === 0) {
+  // Verifica que tasks sea un array
+  const tasksArray = Array.isArray(tasks) ? tasks : [];
+
+  if (tasksArray.length === 0) {
     return (
       <div className={styles.noTasks}>
         <h1 className={styles.TasksTitle}>Mis tareas:</h1>
@@ -35,7 +38,7 @@ const ContainerTasks = () => {
     <div className={styles.taskContainer}>
       <h1 className={styles.TasksTitle}>Mis tareas:</h1>
 
-      {tasks.map((task) => (
+      {tasksArray.map((task) => (
         <Task key={task.id} task={task} />
       ))}
 

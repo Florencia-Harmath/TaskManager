@@ -1,6 +1,6 @@
-
-import styles from './Task.module.css';
+// src/components/task/Task.jsx
 import PropTypes from 'prop-types';
+import styles from './Task.module.css';
 
 const Task = ({ task, onComplete, onDelete }) => {
   return (
@@ -26,14 +26,14 @@ const Task = ({ task, onComplete, onDelete }) => {
 };
 
 Task.propTypes = {
-    task: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
-    }).isRequired,
-    onComplete: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-  };
+  task: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+  }).isRequired,
+  onComplete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
 export default Task;

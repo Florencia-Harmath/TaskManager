@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // Crea una instancia de Axios con la configuración base
 const axiosInstance = axios.create({
-  baseURL: '/api', // Cambia a la baseURL adecuada si es diferente
+  baseURL: 'http://localhost:3000/api', // Cambia al puerto correcto del backend
 });
 
 // Obtener todas las tareas
@@ -18,7 +18,7 @@ export const fetchTasks = createAsyncThunk(
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un array de tareas
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -36,7 +36,7 @@ export const fetchTaskById = createAsyncThunk(
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un objeto de tarea
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -54,7 +54,7 @@ export const addTask = createAsyncThunk(
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un objeto de tarea
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -72,7 +72,7 @@ export const editTask = createAsyncThunk(
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un objeto de tarea
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -112,7 +112,7 @@ export const completeTask = createAsyncThunk(
           },
         }
       );
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un objeto de tarea
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -134,7 +134,7 @@ export const uncompleteTask = createAsyncThunk(
           },
         }
       );
-      return response.data; // Debe ser un objeto serializable
+      return response.data; // Debe ser un objeto de tarea
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -143,43 +143,55 @@ export const uncompleteTask = createAsyncThunk(
 
 const tasksSlice = createSlice({
   name: 'tasks',
-  initialState: [],
+  initialState: {
+    tasks: [], // Asegúrate de que `tasks` sea un array
+    status: 'idle', // Estado de carga: 'idle', 'loading', 'succeeded', 'failed'
+    error: null, // Para manejar errores
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchTasks.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        return action.payload; // Asegúrate de que `action.payload` sea un array serializable
+        state.status = 'succeeded';
+        state.tasks = action.payload; // Asegúrate de que `action.payload` sea un array
+      })
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       })
       .addCase(fetchTaskById.fulfilled, (state, action) => {
-        const index = state.findIndex((task) => task.id === action.payload.id);
+        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
-          state[index] = action.payload; // Asegúrate de que `action.payload` sea serializable
+          state.tasks[index] = action.payload;
         } else {
-          state.push(action.payload);
+          state.tasks.push(action.payload);
         }
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state.push(action.payload); // Asegúrate de que `action.payload` sea serializable
+        state.tasks.push(action.payload); // Asegúrate de que `action.payload` sea un objeto de tarea
       })
       .addCase(editTask.fulfilled, (state, action) => {
-        const index = state.findIndex((task) => task.id === action.payload.id);
+        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
-          state[index] = action.payload; // Asegúrate de que `action.payload` sea serializable
+          state.tasks[index] = action.payload; // Asegúrate de que `action.payload` sea un objeto de tarea
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        return state.filter((task) => task.id !== action.payload); // Asegúrate de que `action.payload` sea serializable
+        state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       })
       .addCase(completeTask.fulfilled, (state, action) => {
-        const index = state.findIndex((task) => task.id === action.payload.id);
+        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
-          state[index] = action.payload; // Asegúrate de que `action.payload` sea serializable
+          state.tasks[index] = action.payload; // Asegúrate de que `action.payload` sea un objeto de tarea
         }
       })
       .addCase(uncompleteTask.fulfilled, (state, action) => {
-        const index = state.findIndex((task) => task.id === action.payload.id);
+        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
-          state[index] = action.payload; // Asegúrate de que `action.payload` sea serializable
+          state.tasks[index] = action.payload; // Asegúrate de que `action.payload` sea un objeto de tarea
         }
       });
   },

@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -12,6 +12,7 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      // Añadimos proxy para las rutas no bajo /api
       '/register': {
         target: 'http://localhost:3000',
         changeOrigin: true,
@@ -24,4 +25,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
