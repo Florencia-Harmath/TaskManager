@@ -10,7 +10,7 @@
   margin: 100px auto; /* Centrado automático en el eje horizontal */
   background-color: var(--fondo-seccion);
   box-shadow: 0 10px 50px var(--fondo-seccion);
-  max-width: 90%;
+  max-width: 50%;
 }
 
 /* Título del formulario */

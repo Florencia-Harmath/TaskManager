@@ -22,6 +22,7 @@ const ContainerTasks = () => {
   if (tasks.length === 0) {
     return (
       <div className={styles.noTasks}>
+        <h1 className={styles.TasksTitle}>Mis tareas:</h1>
         <p>Aún no tienes tareas.</p>
         <Link to="/create-tasks" className={styles.createTaskButton}>
           Crear una tarea
@@ -32,9 +33,15 @@ const ContainerTasks = () => {
 
   return (
     <div className={styles.taskContainer}>
+      <h1 className={styles.TasksTitle}>Mis tareas:</h1>
+
       {tasks.map((task) => (
         <Task key={task.id} task={task} />
       ))}
+
+      <Link to="/create-tasks" className={styles.createTaskButton}>
+        Crear una tarea
+      </Link>
     </div>
   );
 };

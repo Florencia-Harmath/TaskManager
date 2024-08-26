@@ -27,8 +27,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={ <Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/tasks" element={isAuthenticated ? <ContainerTasks /> : <Login />} />
-        <Route path="/create-task" element={isAuthenticated ? <CreateTask /> : <Login />} />
+        <Route path="/tasks" element={<ContainerTasks />} />
+        <Route path="/create-task" element={<CreateTask /> } />
       </Routes>
     </>
   );

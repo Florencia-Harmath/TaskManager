@@ -1,6 +1,6 @@
 # TaskManager API
 
-TaskManager es una API RESTful para gestionar tareas, desarrollada en Go. Permite a los usuarios registrarse, autenticarse y manejar sus tareas de manera eficiente.
+TaskManager es una API RESTful para gestionar tareas, desarrollada en Go para el backend y React Vite para el front. Permite a los usuarios registrarse, autenticarse y manejar sus tareas de manera eficiente.
 
 ## Características
 
@@ -75,6 +75,8 @@ TaskManager es una API RESTful para gestionar tareas, desarrollada en Go. Permit
 
 ### Autenticación
 
+ ![imagen](./img/home.png)
+
 - **Registro de usuario**
   - `POST /register`
   - Cuerpo de la solicitud:
@@ -86,6 +88,8 @@ TaskManager es una API RESTful para gestionar tareas, desarrollada en Go. Permit
     }
     ```
 
+    ![imagen](./img/register.png)
+
 - **Inicio de sesión**
   - `POST /login`
   - Cuerpo de la solicitud:
@@ -96,7 +100,12 @@ TaskManager es una API RESTful para gestionar tareas, desarrollada en Go. Permit
     }
     ```
 
+ ![imagen](./img/login.png)
+
+
 ### Gestión de Tareas
+
+ ![imagen](./img/tasks.png)
 
 - **Obtener todas las tareas**
   - `GET /tasks`

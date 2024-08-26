@@ -1,29 +1,68 @@
 /* Contenedor principal de las tareas */
 .containerTasks {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: var(--niebla-gris);
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 20px;
+  margin: 100px auto; 
+  background-color: var(--fondo-seccion);
+  box-shadow: 0 10px 50px var(--fondo-seccion);
+  max-width: 50%;
+}
+
+.noTasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 20px;
+  margin: 100px auto;
+  background-color: var(--fondo-seccion);
+  box-shadow: 0 10px 50px var(--fondo-seccion);
+  max-width: 50%;
+}
+
+.createTaskButton {
+  width: 50%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--botones);
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+}
+
+.createTaskButton:hover {
+  background-color: var(--fondo);
+}
+
+.TasksTitle {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .containerTasks {
-        padding: 10px;
-    }
+  .containerTasks {
+    padding: 10px;
+  }
 
-    .taskContainer {
-        padding: 15px;
-    }
+  .taskContainer {
+    padding: 15px;
+  }
 
-    .taskTitle {
-        font-size: 1.2rem;
-    }
+  .taskTitle {
+    font-size: 1.2rem;
+  }
 
-    .taskDescription {
-        font-size: 0.9rem;
-    }
+  .taskDescription {
+    font-size: 0.9rem;
+  }
 }
