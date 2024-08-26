@@ -18,7 +18,6 @@ TaskManager es una API RESTful para gestionar tareas, desarrollada en Go para el
   - `golang.org/x/crypto/bcrypt`
   - `gorm.io/gorm`
   - `gorm.io/driver/postgres`
-- Node.js (para el frontend)
 
 ## Instalación
 
