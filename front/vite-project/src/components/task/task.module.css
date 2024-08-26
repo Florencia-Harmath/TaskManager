@@ -1,58 +1,109 @@
-/* Contenedor de la tarea individual */
+/* Contenedor principal de la tarea */
 .taskContainer {
-    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-    margin-bottom: 15px;
+    margin: 10px auto; /* Espaciado automático para centrar el contenedor */
+    background-color: var(--fondo-tarea);
+    box-shadow: 0 4px 8px var(--sombra-tarea);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Asegura que el contenedor no se desborde en pantallas pequeñas */
 }
 
 /* Título de la tarea */
 .taskTitle {
-    font-size: 1.5rem;
-    color: var(--azul-profundo);
+    font-size: 1.8rem;
     margin-bottom: 10px;
+    color: var(--texto-titulo-tarea); /* Color del texto del título de la tarea */
 }
 
 /* Descripción de la tarea */
 .taskDescription {
     font-size: 1rem;
-    color: var(--gris-oscuro);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    color: var(--texto-descripcion-tarea); /* Color del texto de la descripción de la tarea */
+    text-align: center;
 }
 
-/* Contenedor de acciones */
+/* Contenedor de los botones de acción */
 .taskActions {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
 }
 
-/* Botón de completar */
+/* Estilo del botón de completar tarea */
 .completeButton {
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: var(--verde-menta);
+    background-color: var(--boton-completar);
     color: white;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-align: center;
 }
 
-.completeButton:hover {
-    background-color: var(--azul-profundo);
-}
-
-/* Botón de eliminar */
+/* Estilo del botón de eliminar tarea */
 .deleteButton {
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: var(--rojo-oscuro);
+    background-color: var(--boton-eliminar);
     color: white;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+/* Efectos al pasar el ratón sobre los botones */
+.completeButton:hover {
+    background-color: var(--boton-completar-hover);
 }
 
 .deleteButton:hover {
-    background-color: var(--gris-oscuro);
+    background-color: var(--boton-eliminar-hover);
+}
+
+/* Estilo de los botones en estado de foco */
+.completeButton:focus,
+.deleteButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--foco-boton);
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .taskTitle {
+        font-size: 1.5rem;
+    }
+
+    .taskDescription {
+        font-size: 0.9rem;
+    }
+
+    .completeButton,
+    .deleteButton {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .taskTitle {
+        font-size: 1.2rem;
+    }
+
+    .taskDescription {
+        font-size: 0.8rem;
+    }
+
+    .completeButton,
+    .deleteButton {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
 }

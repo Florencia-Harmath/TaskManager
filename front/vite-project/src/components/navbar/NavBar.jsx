@@ -1,11 +1,10 @@
+// src/components/navbar/NavBar.jsx
 import { Link } from 'react-router-dom';
 import styles from './NavBar.module.css';
-import PropTypes from 'prop-types';
 
-const NavBar = ({ isAuthenticated }) => {
+const NavBar = () => {
   return (
     <>
-      {isAuthenticated && (
         <nav className={styles.navBar}>
           <ul className={styles.navList}>
             <li className={styles.navItem}>
@@ -16,13 +15,9 @@ const NavBar = ({ isAuthenticated }) => {
             </li>
           </ul>
         </nav>
-      )}
     </>
   );
 };
 
-NavBar.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
-  };
 
 export default NavBar;

@@ -1,13 +1,102 @@
-.cretarTaskContainer {
-    display: flex;
+/* Contenedor principal del formulario de creación de tareas */
+.createTaskContainer {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: auto;
   padding: 20px;
   text-align: center;
-  margin: 100px auto; /* Centrado automático en el eje horizontal */
+  margin: 100px auto; 
   background-color: var(--fondo-seccion);
   box-shadow: 0 10px 50px var(--fondo-seccion);
-  max-width: 50%;
+  max-width: 90%; 
+}
+
+/* Título del formulario de creación de tareas */
+.createTaskTitle {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+/* Contenedor del formulario de creación de tareas */
+.createTaskForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Estilo para los grupos de formularios (inputs y labels) */
+.formGroup {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Estilo de las etiquetas (labels) */
+.formGroup label {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+/* Estilo de los campos de entrada (inputs) */
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--borde-input);
+  border-radius: 4px;
+  box-sizing: border-box; 
+}
+
+/* Estilo del botón de envío */
+.submitButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--botones);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  min-width: 150px; 
+}
+
+/* Efectos al pasar el ratón sobre el botón */
+.submitButton:hover {
+  background-color: var(--fondo);
+}
+
+.submitButton:focus {
+  outline: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .createTaskTitle {
+      font-size: 2rem;
+  }
+
+  .formGroup {
+      width: 90%;
+  }
+
+  .submitButton {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .createTaskTitle {
+      font-size: 1.8rem;
+  }
+
+  .submitButton {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+  }
 }

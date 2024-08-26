@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/App.js
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -22,13 +23,13 @@ const App = () => {
 
   return (
     <>
-      <NavBar isAuthenticated={isAuthenticated} />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={ <Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tasks" element={<ContainerTasks />} />
-        <Route path="/create-task" element={<CreateTask /> } />
+        <Route path="/create-task" element={<CreateTask />} />
       </Routes>
     </>
   );
