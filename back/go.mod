@@ -6,14 +6,10 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/gorilla/mux v1.8.1
 	github.com/joho/godotenv v1.5.1
+	github.com/rs/cors v1.11.0
 	golang.org/x/crypto v0.26.0
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.11
-)
-
-require (
-	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/gorilla/handlers v1.5.2
 )
 
 require (

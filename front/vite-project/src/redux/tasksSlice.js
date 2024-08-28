@@ -84,7 +84,7 @@ export const deleteTask = createAsyncThunk(
   'tasks/deleteTask',
   async (taskId, { getState, rejectWithValue }) => {
     try {
-      const { auth } = getState();
+      const { auth, flag } = getState();
       await axiosInstance.delete(`/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -120,13 +120,13 @@ export const completeTask = createAsyncThunk(
 );
 
 // Cambiar estado de tarea a incompleto
-export const uncompleteTask = createAsyncThunk(
+export const incompleteTask = createAsyncThunk(
   'tasks/uncompleteTask',
   async (taskId, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
       const response = await axiosInstance.put(
-        `/tasks/${taskId}/uncomplete`,
+        `/tasks/${taskId}/incomplete`,
         {},
         {
           headers: {
@@ -147,8 +147,13 @@ const tasksSlice = createSlice({
     tasks: [], // Asegúrate de que `tasks` sea un array
     status: 'idle', // Estado de carga: 'idle', 'loading', 'succeeded', 'failed'
     error: null, // Para manejar errores
+    flag: false, //Para actualizar la lista
   },
-  reducers: {},
+  reducers: {
+    setTasks: (state, action) => {
+      state.tasks = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
@@ -180,21 +185,24 @@ const tasksSlice = createSlice({
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
+        state.flag = !state.flag;
         state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       })
       .addCase(completeTask.fulfilled, (state, action) => {
-        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
+        const index = state.tasks.findIndex((task) => task.ID === action.payload.ID);
         if (index !== -1) {
           state.tasks[index] = action.payload; // Asegúrate de que `action.payload` sea un objeto de tarea
         }
       })
-      .addCase(uncompleteTask.fulfilled, (state, action) => {
-        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
+      .addCase(incompleteTask.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex((task) => task.ID === action.payload.ID);
         if (index !== -1) {
           state.tasks[index] = action.payload; // Asegúrate de que `action.payload` sea un objeto de tarea
         }
       });
   },
 });
+
+export const {setTasks} = tasksSlice.actions;
 
 export default tasksSlice.reducer;

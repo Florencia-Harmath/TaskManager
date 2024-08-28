@@ -1,4 +1,3 @@
-// src/redux/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -14,7 +13,7 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, thunkAPI) => {
     try {
-      const response = await axios.post('/api/register', userData);
+      const response = await axios.post('/register', userData);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to register';
@@ -28,8 +27,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (loginData, thunkAPI) => {
     try {
-      const response = await axios.post('/api/login', loginData);
-      console.log(response.data);
+      const response = await axios.post('/login', loginData);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -41,6 +39,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    login: (state, action) => {
+      state.token = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -68,9 +69,9 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload.user;
+        state.user = action.payload.user; //ESTO NO VIENE EN LA RESPUESTA
         state.token = action.payload.token;
-        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('isAuthenticated', action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -79,6 +80,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -5,23 +5,23 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    margin: 10px auto; /* Espaciado automático para centrar el contenedor */
+    margin: 20px auto;
     background-color: var(--fondo-tarea);
     box-shadow: 0 4px 8px var(--sombra-tarea);
     border-radius: 8px;
-    max-width: 600px; /* Asegura que el contenedor no se desborde en pantallas pequeñas */
+    max-width: 90%; /* Asegura que el contenedor no se desborde en pantallas pequeñas */
 }
 
 /* Título de la tarea */
 .taskTitle {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 10px;
     color: var(--texto-titulo-tarea); /* Color del texto del título de la tarea */
 }
 
 /* Descripción de la tarea */
 .taskDescription {
-    font-size: 1rem;
+    font-size: 1.25rem;
     margin-bottom: 20px;
     color: var(--texto-descripcion-tarea); /* Color del texto de la descripción de la tarea */
     text-align: center;
@@ -39,6 +39,18 @@
     border: none;
     border-radius: 4px;
     background-color: var(--boton-completar);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.undoButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--boton-undo);
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -64,6 +76,10 @@
     background-color: var(--boton-completar-hover);
 }
 
+.undoButton:hover {
+    background-color: var(--boton-undo-hover);
+}
+
 .deleteButton:hover {
     background-color: var(--boton-eliminar-hover);
 }
@@ -72,7 +88,7 @@
 .completeButton:focus,
 .deleteButton:focus {
     outline: none;
-    box-shadow: 0 0 0 3px var(--foco-boton);
+    box-shadow: 0 1px 1px 1px var(--foco-boton);
 }
 
 /* Estilos para pantallas más pequeñas */

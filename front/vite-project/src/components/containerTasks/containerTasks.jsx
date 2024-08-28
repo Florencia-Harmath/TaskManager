@@ -1,32 +1,33 @@
-// src/components/containerTasks/ContainerTasks.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTasks } from "../../redux/tasksSlice";
+import { fetchTasks, setTasks } from "../../redux/tasksSlice";
 import Task from "../task/Task";
 import { Link } from "react-router-dom";
 import styles from "./ContainerTasks.module.css";
 
 const ContainerTasks = () => {
   const dispatch = useDispatch();
-  const tasks = useSelector((state) => state.tasks);
-  const status = useSelector((state) => state.status);
+  const {tasks, status, flag} = useSelector((store) => store.tasks);
 
   useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+    dispatch(fetchTasks())
+      .then(response=>{dispatch(setTasks(response.payload))})
+      .catch(e => console.log(e));
+    }, [flag]);
 
-  if (status === "loading") {
+  if (status != "succeeded" && status != "failed") {
     return <p>Loading tasks...</p>;
   }
 
-  // Verifica que tasks sea un array
-  const tasksArray = Array.isArray(tasks) ? tasks : [];
-
-  if (tasksArray.length === 0) {
+  if (status === "succeeded" && tasks.length > 0) {
     return (
-      <div className={styles.noTasks}>
+      <div className={styles.containerTasks}>
         <h1 className={styles.TasksTitle}>Mis tareas:</h1>
-        <p>Aún no tienes tareas.</p>
+        <div className={styles.tasksDiv}>
+          {tasks.map((task) => (
+            <Task key={task.ID} task={task} />
+          ))}
+        </div>
         <Link to="/create-tasks" className={styles.createTaskButton}>
           Crear una tarea
         </Link>
@@ -35,18 +36,15 @@ const ContainerTasks = () => {
   }
 
   return (
-    <div className={styles.taskContainer}>
+    <div className={styles.noTasks}>
       <h1 className={styles.TasksTitle}>Mis tareas:</h1>
-
-      {tasksArray.map((task) => (
-        <Task key={task.id} task={task} />
-      ))}
-
+      <p>Aún no tienes tareas.</p>
       <Link to="/create-tasks" className={styles.createTaskButton}>
         Crear una tarea
       </Link>
     </div>
   );
+
 };
 
 export default ContainerTasks;
