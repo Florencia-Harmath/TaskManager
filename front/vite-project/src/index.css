@@ -9,7 +9,16 @@
   --fondo-claro: #EEEEEE;
   --fondo: #134B70;
   --fondo-seccion: #508C9B;
+  --fondo-tarea: #134B70;
+  --sombra-tarea: #0b3755;
   --botones: #201E43;
+  --boton-completar: #509b67;
+  --boton-completar-hover: #81da9c;
+  --boton-undo: #e0a016;
+  --boton-undo-hover: #eab33c;
+  --foco-boton: #000000;
+  --boton-eliminar: #a22121;
+  --boton-eliminar-hover: #c04d4d;
 }
 
 body {

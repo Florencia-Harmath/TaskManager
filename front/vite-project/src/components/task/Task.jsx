@@ -1,39 +1,42 @@
-// src/components/task/Task.jsx
-import PropTypes from 'prop-types';
 import styles from './Task.module.css';
+import { useDispatch } from 'react-redux';
+import { completeTask, deleteTask, incompleteTask } from '../../redux/tasksSlice';
 
-const Task = ({ task, onComplete, onDelete }) => {
+const Task = ({task}) => {
+  const dispatcher = useDispatch();
+
+  const onComplete = () => {
+    if (task.Completed) {
+      dispatcher(incompleteTask(task.ID));
+    } else {
+      dispatcher(completeTask(task.ID));
+    };
+  };
+
+  const onDelete = () => {
+    dispatcher(deleteTask(task.ID))
+  };
+
   return (
     <div className={styles.taskContainer}>
-      <h3 className={styles.taskTitle}>{task.title}</h3>
-      <p className={styles.taskDescription}>{task.description}</p>
+      <h3 className={styles.taskTitle}>{task.Title}</h3>
+      <p className={styles.taskDescription}>{task.Description}</p>
       <div className={styles.taskActions}>
         <button
-          className={styles.completeButton}
-          onClick={() => onComplete(task.id)}
+          className={task.Completed ? styles.undoButton : styles.completeButton}
+          onClick={() => onComplete()}
         >
-          {task.completed ? 'Undo' : 'Complete'}
+          {task.Completed ? 'Deshacer' : 'Completa'}
         </button>
         <button
           className={styles.deleteButton}
-          onClick={() => onDelete(task.id)}
+          onClick={() => onDelete()}
         >
-          Delete
+          Eliminar
         </button>
       </div>
     </div>
   );
-};
-
-Task.propTypes = {
-  task: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired,
-  }).isRequired,
-  onComplete: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default Task;

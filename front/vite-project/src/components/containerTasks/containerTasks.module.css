@@ -12,6 +12,10 @@
   max-width: 50%;
 }
 
+.tasksDiv {
+  width: 100%;
+}
+
 .noTasks {
   display: flex;
   flex-direction: column;

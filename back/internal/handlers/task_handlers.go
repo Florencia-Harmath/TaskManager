@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"taskmanager/internal/database"
@@ -25,7 +24,6 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 
 	var tasks []models.Task
 	database.DB.Where("user_id = ?", userID).Find(&tasks)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(&tasks)
@@ -73,8 +71,6 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-
 // Función que inserta un task en la base de datos.
 func CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
@@ -91,8 +87,6 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("User ID:", userID)
-
 	task.UserID = userID
 
 	result := database.DB.Create(&task)
@@ -102,11 +96,9 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated) 
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(task)
 }
-
-
 
 // Función que actualiza un task.
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
@@ -146,7 +138,8 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := r.URL.Query().Get("id")
+	vars := mux.Vars(r)
+	id := vars["id"]
 
 	var task models.Task
 	result := database.DB.Where("user_id = ? AND id = ?", userID, id).Delete(&task)
@@ -161,7 +154,8 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 // funcion quie cambia de false a true el completed
 
 func CompleteTask(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	vars := mux.Vars(r)
+	id := vars["id"]
 
 	var task models.Task
 	result := database.DB.First(&task, "id = ?", id)
@@ -182,7 +176,8 @@ func CompleteTask(w http.ResponseWriter, r *http.Request) {
 
 // funcion que cambia de true a false el completed
 func UncompleteTask(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	vars := mux.Vars(r)
+	id := vars["id"]
 
 	var task models.Task
 	result := database.DB.First(&task, "id = ?", id)
