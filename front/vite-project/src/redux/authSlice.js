@@ -1,3 +1,5 @@
+// authSlice.js
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -11,13 +13,12 @@ const initialState = {
 // Thunk para el registro de usuario
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (userData, thunkAPI) => {
+  async (registerData, thunkAPI) => {
     try {
-      const response = await axios.post('/register', userData);
+      const response = await axios.post('/register', registerData);
       return response.data;
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to register';
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
@@ -31,6 +32,40 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Thunk para obtener el perfil del usuario
+export const fetchUserProfile = createAsyncThunk(
+  'auth/fetchUserProfile',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/users/me', {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
+    }
+  }
+);
+
+// Thunk para actualizar el perfil del usuario
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (name, thunkAPI) => {
+    try {
+      const response = await axios.put('/api/users/me', { name }, {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().auth.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Failed to update profile');
     }
   }
 );
@@ -59,6 +94,7 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         state.user = action.payload.user;
         state.token = action.payload.token;
+        localStorage.setItem('isAuthenticated', action.payload.token);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -69,11 +105,33 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload.user; //ESTO NO VIENE EN LA RESPUESTA
+        state.user = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem('isAuthenticated', action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       });

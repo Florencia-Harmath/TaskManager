@@ -1,0 +1,112 @@
+/* Contenedor principal del perfil */
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    margin: 100px auto; /* Centrado automático en el eje horizontal */
+    background-color: var(--fondo-seccion);
+    box-shadow: 0 10px 50px var(--fondo-seccion);
+    max-width: 50%;
+}
+
+/* Título del perfil */
+.profileTitle {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo del formulario de perfil */
+.profileForm {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Agrupación de los campos del perfil */
+.formGroup {
+    margin-bottom: 20px;
+}
+
+/* Etiquetas de los campos */
+.formGroup label {
+    display: block;
+    font-size: 1rem;
+    color: var(--gris-oscuro);
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* Campos de entrada del perfil */
+.formGroup input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--niebla-gris);
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Botón de guardar cambios */
+.saveButton {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--botones);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.saveButton:hover {
+    background-color: var(--fondo);
+}
+
+.saveButton:disabled {
+    background-color: var(--niebla-gris);
+    cursor: not-allowed;
+}
+
+/* Mensaje de error */
+.errorMessage {
+    color: red;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Mensaje de éxito */
+.successMessage {
+    color: green;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profileTitle {
+        font-size: 2rem;
+    }
+
+    .profileForm {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .formGroup input {
+        font-size: 0.9rem;
+    }
+
+    .saveButton {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

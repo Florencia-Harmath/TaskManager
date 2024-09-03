@@ -26,5 +26,9 @@ func InitializeRouter() *mux.Router {
 	s.HandleFunc("/tasks/{id}/complete", handlers.CompleteTask).Methods("PUT")
 	s.HandleFunc("/tasks/{id}/incomplete", handlers.UncompleteTask).Methods("PUT")
 
+    //s.HandleFunc("/users", handlers.GetUsers).Methods("GET")
+    s.HandleFunc("/users/{id}", handlers.GetUserByID).Methods("GET")
+    s.HandleFunc("/updateusers/{id}", handlers.UpdateUser).Methods("PUT")
+
 	return r
 }

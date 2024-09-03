@@ -24,6 +24,10 @@ type LoginUser struct {
     Password string `json:"password"`
 }
 
+type UpdateUserRequest struct {
+    Name string `json:"name"`
+}
+
 // HashPassword encripta la contraseña del usuario
 func (u *RegisterUser) HashPassword() error {
     hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)

@@ -6,6 +6,7 @@ import Login from './components/login/Login';
 import Register from './components/register/Register';
 import ContainerTasks from './components/containerTasks/containerTasks';
 import CreateTask from './components/createTasks/CreateTasks';
+import Profile from './components/profile/Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './redux/authSlice';
 
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/tasks" element={<ContainerTasks />} />
         <Route path="/create-tasks" element={<CreateTask />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
